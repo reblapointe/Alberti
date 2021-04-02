@@ -16,23 +16,24 @@ encoding = {
 }
 
 
-def encryptChar(cypher:albertiCypher, message:str, key:int) -> str: 
-	posMess = cypher.stationnary.find(message)
-	posCypher = (posMess + key) % cypher.modulo
-	return cypher.movable[posCypher]
+def encryptChar(message:str, key:int) -> str: 
+	posMess = albertiCypher.stationnary.find(message)
+	posCypher = (posMess + key) % albertiCypher.modulo
+	return albertiCypher.movable[posCypher]
 
-#def encode(cypher:albertiCypher, message) -> str: 
-	#return romanNumeral(message)
-
-def encrypt(cypher:albertiCypher, message:str, key:str) -> str:
+def encode(message) -> str: 
+	for e in encoding:
+		message = message.replace(e, encoding[e])
+	return message
+def encrypt(message:str, key:str) -> str:
 	message = message.upper()
-	#message = encode(cypher, message)
+	message = encode(message)
 	cryptogram = ""
-	posKey = cypher.stationnary.find(key)
+	posKey = albertiCypher.stationnary.find(key)
 	for c in message:
-		cryptogram += encryptChar(cypher,c, posKey)
+		cryptogram += encryptChar(c, posKey)
 	return cryptogram
 
 s = input()
-cryptogram = encrypt(albertiCypher, s, "D")
+cryptogram = encrypt(s, "D")
 print(cryptogram)
