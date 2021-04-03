@@ -22,7 +22,7 @@ encoding = {
 }
 
 def lengthCrypto():
-	return Param.subMessageLength * math.exp(-1 * random.random() * Param.subMessageLength) + Param.subMessageMinLength
+	return 100##Param.subMessageLength * math.exp(-1 * random.random() * Param.subMessageLength) + Param.subMessageMinLength
 
 
 def nextLettre():
@@ -73,6 +73,28 @@ def encrypt(message:str, key:str) -> str:
 			
 	return cryptogram
 
+
+def decryptChar(message:str, key:int) -> str: 
+	posMess = Disk.movable.find(message)
+	posCypher = (posMess - key) % Disk.size
+	return Disk.stationnary[posCypher]
+
+
+def decrypt(cryptogram:str, position:int) :
+	message = ""
+	for c in cryptogram :
+		message += decryptChar(c, position)
+	return message
+
+
 s = input()
 cryptogram = encrypt(s, "e")
 print(cryptogram)
+print()
+
+i = 0
+while i < Disk.size :
+	printDisk(i)
+	message = decrypt(cryptogram, i)
+	print(message)
+	i += 1
