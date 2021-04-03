@@ -22,7 +22,7 @@ encoding = {
 }
 
 def lengthCrypto():
-	return 100##Param.subMessageLength * math.exp(-1 * random.random() * Param.subMessageLength) + Param.subMessageMinLength
+	return Param.subMessageLength * math.exp(-1 * random.random() * Param.subMessageLength) + Param.subMessageMinLength
 
 
 def nextLettre():
