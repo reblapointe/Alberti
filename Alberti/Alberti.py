@@ -1,7 +1,10 @@
-from typing import List
-from typing import Tuple
 import math
 import random
+
+class Param :
+	subMessageLength = 10
+	subMessageMinLength = 1
+	probaDigit = 5
 
 class Disk:
 	stationnary = "ABCDEFGILMNOPQRSTVXZ1234"
@@ -19,9 +22,7 @@ encoding = {
 }
 
 def lengthCrypto():
-	averageLength:float = 5
-
-	return averageLength * math.exp(-1 * random.random() * averageLength)
+	return Param.subMessageLength * math.exp(-1 * random.random() * Param.subMessageLength) + Param.subMessageMinLength
 
 
 def nextLettre():
@@ -55,24 +56,23 @@ def encrypt(message:str, key:str) -> str:
 	message = encode(message)
 	posKeyRotary:int = Disk.movable.find(key)
 	cryptogram = ""
-	indice:int = 0;
-	print("Key = " + key, end = '')
-	print ("(" + str(Disk.movable.find(key)) + ")")
-	while indice < len(message):
+	indexMessage:int = 0;
+	print("Key = " + str(Disk.movable.find(key)) + "(" + key + ")")
+	while indexMessage < len(message):
 		indLettre = nextLettre()
-		print ("IndLettre = " + str(indLettre), end = '')
 		cryptogram += Disk.stationnary[indLettre]
-		print ("(" + Disk.stationnary[indLettre] + ")")
 		posKey = (posKeyRotary - indLettre) % Disk.size
-
+		
+		print (Disk.stationnary[indLettre])
 		printDisk(posKey)
-		next = min(indice + lengthCrypto(), len(message))
-		while indice < next :
-			cryptogram += encryptChar(message[indice], posKey)
-			indice = indice + 1;
+
+		next = min(indexMessage + lengthCrypto(), len(message))
+		while indexMessage < next :
+			cryptogram += encryptChar(message[indexMessage], posKey)
+			indexMessage += 1;
 			
 	return cryptogram
 
 s = input()
-cryptogram = encrypt(s, "k")
+cryptogram = encrypt(s, "e")
 print(cryptogram)
