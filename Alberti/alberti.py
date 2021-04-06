@@ -11,7 +11,7 @@ class Disk:
 	movable =     "gklnprtuz&xysomqihfdbace"
 	size = len(stationnary)
 	nbKeys = len(stationnary) - 4
-	regexCryptogram = "[^ABCDEFGILMNOPQRSTVXZgklnprtuz&xysomqihfdbace]"
+	regexCryptogram = "ABCDEFGILMNOPQRSTVXZgklnprtuz&xysomqihfdbace"
         
 encoding = {
 	"H" : "FF",

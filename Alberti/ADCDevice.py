@@ -12,12 +12,11 @@ bus = smbus.SMBus(1)    #initialize System Management Bus to enable I2C communic
 cmd = 0x40  # control byte to enable analog output 
 cryptogram = "OcfBqlNqrByiiBpqqyxilhhuipq"
 
-print("alberti avec cryptogramme" + str(len(sys.argv)))
 if len(sys.argv) > 1 :
     cryptogram = sys.argv[1]
-cryptogram = re.sub(alberti.Disk.regexCryptogram, "", cryptogram)
+cryptogram = re.sub("[^" + alberti.Disk.regexCryptogram + "]", "", cryptogram)
 
-print(cryptogram)
+print("Cryptogramme : " + cryptogram)
 # read the digital quantity representation of an analog signal from one of the pins of the AD Converter
 # chn (Channels) ranges from 0 to 3 to read analog input from  A0, A1, A2 & A3 pins
 def analogRead(chn):
