@@ -2,11 +2,22 @@ import smbus
 import time
 import alberti
 import os
+import sys
+import re
+
+# source code : https://embeddedcircuits.com/raspberry-pi/tutorial/raspberry-pi-potentiometer-tutorial
 
 address = 0x48
 bus = smbus.SMBus(1)    #initialize System Management Bus to enable I2C communication
 cmd = 0x40  # control byte to enable analog output 
- 
+cryptogram = "OcfBqlNqrByiiBpqqyxilhhuipq"
+
+print("alberti avec cryptogramme" + str(len(sys.argv)))
+if len(sys.argv) > 1 :
+    cryptogram = sys.argv[1]
+cryptogram = re.sub(alberti.Disk.regexCryptogram, "", cryptogram)
+
+print(cryptogram)
 # read the digital quantity representation of an analog signal from one of the pins of the AD Converter
 # chn (Channels) ranges from 0 to 3 to read analog input from  A0, A1, A2 & A3 pins
 def analogRead(chn):
@@ -19,14 +30,14 @@ def analogWrite(value):
      
 def loop():
     while True:
-        os.system('clear')
+#        os.system('clear')
         value = analogRead(0)
         analogWrite(value)
         print(value)
         key = int((256 - value) / 255 * alberti.Disk.size - 1)
         alberti.printDisk(key)
-        print("OcfBqlNqrByiiBpqqyxilhhuipq")
-        print(alberti.decrypt("OcfBqlNqrByiiBpqqyxilhhuipq", key))
+        print(cryptogram)
+        print(alberti.decrypt(cryptogram, key))
         time.sleep(0.1)
          
 def destroy():
