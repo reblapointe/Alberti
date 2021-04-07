@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 import smbus
 import time
-import alberti
+import algoAlberti as alberti
 import os
 import sys
 import re
@@ -29,7 +30,7 @@ def analogWrite(value):
      
 def loop():
     while True:
-#        os.system('clear')
+        os.system('clear')
         value = analogRead(0)
         analogWrite(value)
         print(value)

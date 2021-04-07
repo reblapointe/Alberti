@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # python3 -c 'import alberti; print(alberti.encrypt("patate","e"))'
 
 import math
