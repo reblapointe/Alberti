@@ -9,9 +9,9 @@ import re
 # source code : https://embeddedcircuits.com/raspberry-pi/tutorial/raspberry-pi-potentiometer-tutorial
 
 address = 0x48
-bus = smbus.SMBus(1)    #initialize System Management Bus to enable I2C communication
+bus = smbus.SMBus(1) #initialize System Management Bus to enable I2C communication
 cmd = 0x40  # control byte to enable analog output 
-cryptogram = "OcfBqlNqrByiiBpqqyxilhhuipq"
+cryptogram = "QbinxmFbxudssigyyutscooNcudty"
 
 if len(sys.argv) > 1 :
     cryptogram = sys.argv[1]
@@ -33,7 +33,6 @@ def loop():
         os.system('clear')
         value = analogRead(0)
         analogWrite(value)
-        print(value)
         key = int((256 - value) / 255 * alberti.Disk.size - 1)
         alberti.printDisk(key)
         print(cryptogram)
