@@ -1,6 +1,4 @@
-# Alberti
-
-À quoi sert AlberPi?
+# À quoi sert AlberPi?
 
 AlberPi sert à accélérer le chiffrement et déchiffrement selon le chiffre d’Alberti. 
 
@@ -8,7 +6,7 @@ Pour un cryptogramme donné, il le déchiffre en effectuant les substitutions se
 
 Pour un message et une clé donnée, il bâtit un cryptogramme selon le chiffre d’Alberti.
 
-Démarrage rapide
+# Démarrage rapide
 
 Pour démarrer le programme
 pi@raspberrypi:~$ python3 disqueAlberti.py
