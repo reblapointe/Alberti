@@ -13,16 +13,12 @@ Pour un message et une clé donnée, il bâtit un cryptogramme selon le chiffre 
 Pour démarrer le programme  
 > python3 disqueAlberti.py  
 
-Ceci démarre le programme avec un cryptogramme par défaut.  
-
-Pour démarrer le programme avec un cryptogramme donné  
+Pour démarrer le programme avec un cryptogramme donné. Les caractères qui n’apparaissent pas sur le disque mobile sont ignorés  
 > python3 disqueAlberti.py QbinxmFbxudssigyyutscooNc  
+ 
 
-Les caractères qui n’apparaissent pas sur le disque mobile sont ignorés  
-
-Pour chiffrer un message et obtenir un cryptogramme  
+Pour chiffrer un message et obtenir un cryptogramme. Si la clé n’est pas donnée ou est invalide, la clé pard éfaut est k.   
 > pi@raspberrypi:~$ python3 chiffreAlberti.py "La carotte est cuite." x  
-Si la clé n’est pas donnée ou est invalide, la clé par défaut est k.  
 
 Quand la LED est à son plus fort, centrer le g sur le A.
  
