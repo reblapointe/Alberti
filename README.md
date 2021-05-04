@@ -11,11 +11,13 @@ Pour un message et une clé donnée, il bâtit un cryptogramme selon le chiffre 
 ## Démarrage rapide
 
 Pour démarrer le programme  
-> pi@raspberrypi:~$ python3 disqueAlberti.py  
+> python3 disqueAlberti.py  
+
 Ceci démarre le programme avec un cryptogramme par défaut.  
 
 Pour démarrer le programme avec un cryptogramme donné  
-> pi@raspberrypi:~$ python3 disqueAlberti.py QbinxmFbxudssigyyutscooNc  
+> python3 disqueAlberti.py QbinxmFbxudssigyyutscooNc  
+
 Les caractères qui n’apparaissent pas sur le disque mobile sont ignorés  
 
 Pour chiffrer un message et obtenir un cryptogramme  
