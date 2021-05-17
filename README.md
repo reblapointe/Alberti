@@ -23,5 +23,5 @@ Pour chiffrer un message et obtenir un cryptogramme. Si la clé n’est pas donn
 
 `pi@raspberrypi:~$ python3 chiffreAlberti.py "Les carottes sont cuites." x` 
 
-Quand la LED est à son plus fort, centrer le g sur le A.
+Quand la LED est à son plus fort, centrer le *g* sur le *A*.
  
