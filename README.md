@@ -26,4 +26,4 @@ Pour chiffrer un message et obtenir un cryptogramme. Si la clé n’est pas donn
 Quand la LED est à son plus fort, centrer le *g* sur le *A*.
  
  ## Fabriquer l'appareil
- Voir la [documentation complète](master/documentation/Alberti.docx)
+ Voir la [documentation complète](documentation/Alberti.docx)
