@@ -19,7 +19,7 @@ Pour démarrer le programme avec un cryptogramme donné. Les caractères qui n�
 `pi@raspberrypi:~$ python3 disqueAlberti.py QbinxmFbxudssigyyutscooNc`
  
 
-Pour chiffrer un message et obtenir un cryptogramme. Si la clé n’est pas donnée ou est invalide, la clé pard éfaut est k.   
+Pour chiffrer un message et obtenir un cryptogramme. Si la clé n’est pas donnée ou est invalide, la clé par défaut est `k`.   
 
 `pi@raspberrypi:~$ python3 chiffreAlberti.py "Les carottes sont cuites." x` 
 
