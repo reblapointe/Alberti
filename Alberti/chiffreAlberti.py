@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 
-import math
-import random
-import re
-import sys
+import math, random, re, sys
 
 class Param :
 	subMessageLength = 10
@@ -30,7 +27,7 @@ encoding = {
 def changeLetter() -> bool:
 	return 0 == random.randint(0, Param.subMessageLength)
 
-def nextLettre() -> int :
+def nextLettre() -> int:
 	return random.randint(0, Disk.nbKeys - 1)
 
 def insertDigit() -> bool:
@@ -54,7 +51,6 @@ def encode(message:str) -> str:
 	return encoded
 
 def encrypt(message:str, key:str) -> str:
-	message = encode(message)
 	posKeyRotary:int = Disk.movable.find(key)
 	cryptogram = ""
 	indexMessage:int = 0;
@@ -73,7 +69,7 @@ def decryptChar(message:str, key:int) -> str:
 		posCypher = (posMess - key) % Disk.size
 		return Disk.stationnary[posCypher]
 	else :
-		return ""
+		return "-"
 
 def decrypt(cryptogram:str, position:int) -> str:
 	message = ""
@@ -98,6 +94,10 @@ def bruteForce(cryptogram:str):
 		print(decrypt(cryptogram, i))
 		print()
 
+def cleanupCryptogram(cryptogram:str) -> str:
+        return re.sub("[^" + Disk.regexCryptogram + "]", "", cryptogram)
+
+                
 if __name__ == "__main__":
 	message = "Les carottes sont cuites"
 	key = "k"
@@ -111,3 +111,6 @@ if __name__ == "__main__":
 	print(message)
 	cryptogram = encrypt(message, key)
 	print(cryptogram)
+	print()
+
+	bruteForce(cryptogram)
