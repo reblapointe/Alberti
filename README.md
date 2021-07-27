@@ -14,6 +14,13 @@ Pour démarrer le programme
 
 `pi@raspberrypi:~$ python3 disqueAlberti.py`  
 
+Pour spécifier un message via MQTT :
+
+`mosquitto_pub -h mqtt -t alberti -m 'kLes carottes sont cuites' -r`
+
+La première lettre de la chaîne est la clé avec laquelle le message sera chiffré.
+
+
 Pour démarrer le programme avec un cryptogramme donné. Les caractères qui n’apparaissent pas sur le disque mobile sont ignorés  
 
 `pi@raspberrypi:~$ python3 disqueAlberti.py QbinxmFbxudssigyyutscooNc`

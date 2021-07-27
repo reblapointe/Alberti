@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 # coding=utf-8
+
+# to change message :
+# mosquitto_pub -h mqtt -t alberti -m 'kLes carottes sont cuites' -r
+# first letter is the key
+
 import chiffreAlberti as alberti
 import os, sys, re, time, datetime, subprocess, paho.mqtt.client as paho
 import smbus, I2C_LCD_driver, RPi.GPIO as GPIO
