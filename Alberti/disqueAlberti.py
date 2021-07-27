@@ -1,6 +1,7 @@
 #!/usr/bin/python3
+# coding=utf-8
 import chiffreAlberti as alberti
-import os, sys, re, time, datetime, subprocess
+import os, sys, re, time, datetime, subprocess, paho.mqtt.client as paho
 import smbus, I2C_LCD_driver, RPi.GPIO as GPIO
 # source code : https://embeddedcircuits.com/raspberry-pi/tutorial/raspberry-pi-potentiometer-tutorial
 
@@ -19,13 +20,13 @@ mylcd = I2C_LCD_driver.lcd()
 # MQTT
 mqttBroker = '192.168.1.100'
 mqttPort = 1883
-mqttCryptogramTopic = 'alberti/crypto'
+mqttTopic = 'alberti'
 mqttClient = 0
 
 # GPIO Buttons
 leftButton = 10
 rightButton = 11
-timePressed = 0
+shutdownButton = 4
 
 def buttonsSetup():
     GPIO.setmode(GPIO.BCM)
@@ -42,14 +43,27 @@ def buttonsSetup():
                           callback = rightButtonCallback,
                           bouncetime = 200)
 
-def onPublish(client, userdata, result):
-    cryptogram = alberti.cleanupCryptogram(userdata)
+    GPIO.setup(shutdownButton, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+    GPIO.add_event_detect(shutdownButton, GPIO.RISING,
+                          callback = shutdown,
+                          bouncetime = 200)
+
+def onMessage(client, userdata, message):
+    global cryptogram
+    global refresh
+    payload = str(message.payload.decode('utf-8'))
+    key = payload[0]
+    message = alberti.encode(payload[1:])
+    cryptogram = alberti.encrypt(key = key, message = message)
+    refresh = True
 
 def initMQTT() :
     global mqttClient
-    client = paho.Client()
-    client.on_publish = onPublish
-    client.connect(mqttBroker, mqttPort, 3600)
+    mqttClient = paho.Client()
+    mqttClient.on_message = onMessage
+    mqttClient.connect(mqttBroker, mqttPort)
+    mqttClient.loop_start()
+    mqttClient.subscribe(mqttTopic)
 
 def analogRead(chn):
     value = bus.read_byte_data(address, cmd + chn)
@@ -65,36 +79,46 @@ def destroy():
     mqttClient.disconnect()
 
 def imprimer(c, t) :
-        global pos
-        c = c.ljust(16, ' ')
-        t = t.ljust(16, ' ')
-	# si on depasse ca repete la derniere lettre
-        pos = min(pos, abs(len(c) - 16))
-        mylcd.lcd_display_string(c[pos:], 1)
-        mylcd.lcd_display_string(t[pos:], 2)
+    global pos
+    c = c.ljust(16, ' ')
+    t = t.ljust(16, ' ')
+    print(c[pos : pos + 16])
+    print(t[pos : pos + 16])
+    mylcd.lcd_display_string(c[pos:], 1)
+    mylcd.lcd_display_string(t[pos:], 2)
 
+refresh = False
 def leftButtonCallback(channel) :
-      global pos
-      pos = (pos - 1) % 16
+    global pos
+    global refresh
+    refresh = True
+    pos = 0 if pos == 0 else pos - 1
 
 def rightButtonCallback(channel) :
-      global pos
-      pos = (pos + 1) % 16
-
-def downCallback(channel) :
-     global timePressed
-     timePressed = time.time()
+    global pos
+    global refresh
+    refresh = True
+    pos = min(pos + 1, abs(len(cryptogram) - 16))
 
 def loop():
-    while True:
-        os.system('clear')
+    key = 0
+    global refresh
+    while True :
         value = analogRead(0)
         analogWrite(value)
-        key = int((256 - value) / 255 * alberti.Disk.size - 1)
-        alberti.printDisk(key)
-        print(cryptogram)
-        print(alberti.decrypt(cryptogram, key))
-        imprimer(cryptogram, alberti.decrypt(cryptogram,key) )
+        newKey = int((256 - value) / 255 * alberti.Disk.size - 1)
+        if key != newKey or refresh :
+            os.system('clear')
+            refresh = False
+            alberti.printDisk(key)
+
+            print()
+            print(cryptogram)
+            print(alberti.decrypt(cryptogram, key))
+
+            print()
+            imprimer(cryptogram, alberti.decrypt(cryptogram,key))
+        key = newKey
         time.sleep(0.01)
 
 def get_ip():
@@ -103,29 +127,30 @@ def get_ip():
 
 def shutdown(channel):
     imprimer('Shutting Down', '')
-    time.sleep(5)
+    client.loop_stop()
+    time.sleep(1)
+    mylcd.backlight(0)
     os.system("sudo shutdown -h now")
 
- 
 ### START ###
 pos = 0
 imprimer('Demarrage', '')
 time.sleep(1)
 imprimer('MQTT BROKER ' + str(mqttPort), mqttBroker)
 time.sleep(2)
-imprimer('MQTT Topic', mqttCryptogramTopic)
+imprimer('MQTT Topic', mqttTopic)
 time.sleep(1)
 
 try :
-	initMQTT()
-	imprimer('Connexion MQTT', 'reussie')
-except Exception :
-	imprimer('Connexion MQTT', 'echouee')
+    initMQTT()
+    imprimer('Connexion MQTT', 'reussie')
+except Exception as e :
+    print(e)
+    imprimer('Connexion MQTT', 'echouee')
+
 time.sleep(1)
 
-imprimer(datetime.datetime.now().strftime('%d %b %H:%M:%S'),
-	get_ip())
-
+imprimer(datetime.datetime.now().strftime('%d %b %H:%M:%S'), get_ip())
 time.sleep(5)
 
 buttonsSetup()
