@@ -56,11 +56,15 @@ def buttonsSetup():
 def onMessage(client, userdata, message):
     global cryptogram
     global refresh
+    global pos
     payload = str(message.payload.decode('utf-8'))
     key = payload[0]
     message = alberti.encode(payload[1:])
+
     cryptogram = alberti.encrypt(key = key, message = message)
+
     refresh = True
+    pos = 0
 
 def initMQTT() :
     global mqttClient
@@ -84,9 +88,8 @@ def destroy():
     mqttClient.disconnect()
 
 def imprimer(c, t) :
-    global pos
-    c = c.ljust(16, ' ')
-    t = t.ljust(16, ' ')
+    c = c.ljust(16, " ")
+    t = t.ljust(16, " ")
     print(c[pos : pos + 16])
     print(t[pos : pos + 16])
     mylcd.lcd_display_string(c[pos:], 1)
@@ -123,8 +126,8 @@ def loop():
 
             print()
             imprimer(cryptogram, alberti.decrypt(cryptogram,key))
-        key = newKey
-        time.sleep(0.01)
+            key = newKey
+        time.sleep(0.1)
 
 def get_ip():
     cmd = "hostname -I | cut -d\' \' -f1"
@@ -132,9 +135,11 @@ def get_ip():
 
 def shutdown(channel):
     imprimer('Shutting Down', '')
-    client.loop_stop()
+    mqttClient.loop_stop()
     time.sleep(1)
+    mylcd.lcd_clear()
     mylcd.backlight(0)
+    time.sleep(1)
     os.system("sudo shutdown -h now")
 
 ### START ###
