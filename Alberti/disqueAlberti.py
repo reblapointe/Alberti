@@ -126,6 +126,7 @@ def loop():
 
             print()
             imprimer(cryptogram, alberti.decrypt(cryptogram,key))
+            print()
             key = newKey
         time.sleep(0.1)
 
