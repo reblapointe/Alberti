@@ -10,4 +10,4 @@
 # Description:       Enable service provided by daemon.
 ### END INIT INFO
 
-python3 /home/pi/alberti/disqueAlberti.py > /home/pi/alberti/output.log
+python3 /home/pi/Alberti/disqueAlberti.py > /home/pi/Alberti/output.log
