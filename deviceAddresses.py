@@ -5,7 +5,7 @@ POT_ADDRESS = 0x48
 # MQTT
 MQTT_BROKER = '192.168.1.100'
 MQTT_PORT = 1883
-MQTT_PORT = 'alberti'
+MQTT_TOPIC = 'alberti'
 
 # Buttons
 LEFT_BUTTON_GPIO = 10
