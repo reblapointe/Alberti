@@ -19,7 +19,8 @@ Made available under GNU GENERAL PUBLIC LICENSE
 I2CBUS = 1
 
 # LCD Address
-ADDRESS = 0x27
+import deviceAddresses
+ADDRESS = deviceAddresses.LCD_ADDRESS
 
 import smbus
 from time import sleep

@@ -7,11 +7,11 @@
 
 import chiffreAlberti as alberti
 import os, sys, re, time, datetime, subprocess, paho.mqtt.client as paho
-import smbus, I2C_LCD_driver, RPi.GPIO as GPIO
+import smbus, I2C_LCD_driver, RPi.GPIO as GPIO, deviceAddresses
 # source code : https://embeddedcircuits.com/raspberry-pi/tutorial/raspberry-pi-potentiometer-tutorial
 
 # Potentiometer
-address = 0x48
+address = deviceAddresses.POT_ADDRESS
 bus = smbus.SMBus(1) #initialize System Management Bus to enable I2C communication
 cmd = 0x40  # control byte to enable analog output
 
@@ -23,15 +23,15 @@ pos = 0
 mylcd = I2C_LCD_driver.lcd()
 
 # MQTT
-mqttBroker = '192.168.1.100'
-mqttPort = 1883
-mqttTopic = 'alberti'
+mqttBroker = deviceAddresses.MQTT_BROKER
+mqttPort = deviceAddresses.MQTT_PORT
+mqttTopic = deviceAddresses.MQTT_TOPIC
 mqttClient = 0
 
 # GPIO Buttons
-leftButton = 10
-rightButton = 11
-shutdownButton = 4
+leftButton = deviceAddresses.LEFT_BUTTON_GPIO
+rightButton = deviceAddresses.RIGHT_BUTTON_GPIO
+shutdownButton = deviceAddresses.SHUTDOWN_BUTTON_GPIO
 
 def buttonsSetup():
     GPIO.setmode(GPIO.BCM)
