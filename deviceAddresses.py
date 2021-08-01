@@ -5,7 +5,8 @@ POT_ADDRESS = 0x48
 # MQTT
 MQTT_BROKER = '192.168.1.100'
 MQTT_PORT = 1883
-MQTT_TOPIC = 'alberti'
+MQTT_MESSAGE_TOPIC = 'alberti/msg'
+MQTT_CRYPTO_TOPIC = 'alberti/crypto'
 
 # Buttons
 LEFT_BUTTON_GPIO = 10

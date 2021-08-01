@@ -25,7 +25,8 @@ mylcd = I2C_LCD_driver.lcd()
 # MQTT
 mqttBroker = deviceAddresses.MQTT_BROKER
 mqttPort = deviceAddresses.MQTT_PORT
-mqttTopic = deviceAddresses.MQTT_TOPIC
+mqttMessageTopic = deviceAddresses.MQTT_MESSAGE_TOPIC
+mqttCryptoTopic = deviceAddresses.MQTT_CRYPTO_TOPIC
 mqttClient = 0
 
 # GPIO Buttons
@@ -58,11 +59,12 @@ def onMessage(client, userdata, message):
     global refresh
     global pos
     payload = str(message.payload.decode('utf-8'))
-    key = payload[0]
-    message = alberti.encode(payload[1:])
-
-    cryptogram = alberti.encrypt(key = key, message = message)
-
+    if message.topic == mqttMessageTopic : 
+        key = payload[0]
+        message = alberti.encode(payload[1:])
+        cryptogram = alberti.encrypt(key = key, message = message)
+    else :
+        cryptogram = payload
     refresh = True
     pos = 0
 
@@ -72,7 +74,7 @@ def initMQTT() :
     mqttClient.on_message = onMessage
     mqttClient.connect(mqttBroker, mqttPort)
     mqttClient.loop_start()
-    mqttClient.subscribe(mqttTopic)
+    mqttClient.subscribe([(mqttMessageTopic, 0), (mqttCryptoTopic, 0)])
 
 def analogRead(chn):
     value = bus.read_byte_data(address, cmd + chn)
@@ -149,8 +151,11 @@ imprimer('Demarrage', '')
 time.sleep(1)
 imprimer('MQTT BROKER ' + str(mqttPort), mqttBroker)
 time.sleep(2)
-imprimer('MQTT Topic', mqttTopic)
+imprimer('MQTT Message Topic', mqttMessageTopic)
 time.sleep(1)
+imprimer('MQTT Crypto Topic', mqttCryptoTopic)
+time.sleep(1)
+
 
 try :
     initMQTT()
