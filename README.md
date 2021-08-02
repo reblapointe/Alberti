@@ -14,11 +14,17 @@ Pour démarrer le programme
 
 `pi@raspberrypi:~$ python3 disqueAlberti.py`  
 
-Pour spécifier un message via MQTT :
 
-`mosquitto_pub -h mqtt -t alberti -m 'kLes carottes sont cuites' -r`
+Pour spécifier un message via MQTT (remplacer l'IP par le domaine de votre broker MQTT):
+
+`mosquitto_pub -h 192.168.1.100 -t alberti/msg -m 'kLes carottes sont cuites' -r`
 
 La première lettre de la chaîne est la clé avec laquelle le message sera chiffré.
+
+
+Pour spécifier un cryptogramme via MQTT (remplacer l'IP par le domaine de votre broker MQTT):
+
+`mosquitto_pub -h 192.168.1.100 -t alberti/crypto -m 'QbinxmFbxudssigyyutscooNc' -r`
 
 
 Pour démarrer le programme avec un cryptogramme donné. Les caractères qui n’apparaissent pas sur le disque mobile sont ignorés  
@@ -29,6 +35,7 @@ Pour démarrer le programme avec un cryptogramme donné. Les caractères qui n�
 Pour chiffrer un message et obtenir un cryptogramme. Si la clé n’est pas donnée ou est invalide, la clé par défaut est `k`.   
 
 `pi@raspberrypi:~$ python3 chiffreAlberti.py "Les carottes sont cuites." x` 
+
 
 Quand la LED est à son plus fort, centrer le *g* sur le *A*.
  
