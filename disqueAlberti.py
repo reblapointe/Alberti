@@ -107,8 +107,9 @@ def leftButtonCallback(channel) :
 def rightButtonCallback(channel) :
     global pos
     global refresh
-    refresh = True
-    pos = min(pos + 1, abs(len(cryptogram) - 16))
+    if (len(cryptogram) > 16) : 
+        refresh = True
+        pos = min(pos + 1, abs(len(cryptogram) - 16))
 
 def loop():
     key = 0
