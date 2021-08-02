@@ -139,14 +139,14 @@ def get_ip():
 def shutdown(channel):
     try :
         imprimer('Shutting Down', '')
-    	mqttClient.loop_stop()
-    	time.sleep(1)
-   	mylcd.lcd_clear()
-    	mylcd.backlight(0)
-    	time.sleep(1)
+        mqttClient.loop_stop()
+        time.sleep(1)
+        mylcd.lcd_clear()
+        mylcd.backlight(0)
+        time.sleep(1)
     except Exception as e :
         print(str(e))
-    os.system("sudo shutdown -h now")
+  os.system("sudo shutdown -h now")
 
 ### START ###
 pos = 0
