@@ -120,6 +120,7 @@ def loop():
         if key != newKey or refresh :
             os.system('clear')
             refresh = False
+            key = newKey
             alberti.printDisk(key)
 
             print()
@@ -127,10 +128,9 @@ def loop():
             print(alberti.decrypt(cryptogram, key))
 
             print()
-            imprimer(cryptogram, alberti.decrypt(cryptogram,key))
+            imprimer(cryptogram, alberti.decrypt(cryptogram, key))
             print()
-            key = newKey
-        time.sleep(0.1)
+        time.sleep(0.01)
 
 def get_ip():
     cmd = "hostname -I | cut -d\' \' -f1"
@@ -146,19 +146,18 @@ def shutdown(channel):
         time.sleep(1)
     except Exception as e :
         print(str(e))
-  os.system("sudo shutdown -h now")
-
+    os.system("sudo shutdown -h now")
+  
 ### START ###
 pos = 0
 imprimer('Demarrage', '')
 time.sleep(1)
 imprimer('MQTT BROKER ' + str(mqttPort), mqttBroker)
 time.sleep(2)
-imprimer('MQTT Message Topic', mqttMessageTopic)
+imprimer('Message Topic', mqttMessageTopic)
 time.sleep(1)
-imprimer('MQTT Crypto Topic', mqttCryptoTopic)
+imprimer('Crypto Topic', mqttCryptoTopic)
 time.sleep(1)
-
 
 try :
     initMQTT()
@@ -166,7 +165,6 @@ try :
 except Exception as e :
     print(e)
     imprimer('Connexion MQTT', 'echouee')
-
 time.sleep(1)
 
 imprimer(datetime.datetime.now().strftime('%d %b %H:%M:%S'), get_ip())
