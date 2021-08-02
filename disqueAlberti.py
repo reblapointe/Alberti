@@ -137,12 +137,15 @@ def get_ip():
     return subprocess.check_output(cmd, shell=True).decode("utf-8").strip()
 
 def shutdown(channel):
-    imprimer('Shutting Down', '')
-    mqttClient.loop_stop()
-    time.sleep(1)
-    mylcd.lcd_clear()
-    mylcd.backlight(0)
-    time.sleep(1)
+    try :
+        imprimer('Shutting Down', '')
+    	mqttClient.loop_stop()
+    	time.sleep(1)
+   	mylcd.lcd_clear()
+    	mylcd.backlight(0)
+    	time.sleep(1)
+    except Exception as e :
+        print(str(e))
     os.system("sudo shutdown -h now")
 
 ### START ###
