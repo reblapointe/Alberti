@@ -2,7 +2,7 @@
 # coding=utf-8
 
 # to change message :
-# mosquitto_pub -h mqtt -t alberti -m 'kLes carottes sont cuites' -r
+# mosquitto_pub -h mqtt -t alberti/msg -m 'kLes carottes sont cuites' -r
 # first letter is the key
 
 import chiffreAlberti as alberti
@@ -64,7 +64,7 @@ def onMessage(client, userdata, message):
         message = alberti.encode(payload[1:])
         cryptogram = alberti.encrypt(key = key, message = message)
     else :
-        cryptogram = payload
+        cryptogram = alberti.cleanupCryptogram(payload)
     refresh = True
     pos = 0
 
@@ -151,6 +151,8 @@ def shutdown(channel):
   
 ### START ###
 pos = 0
+
+# Print configuration
 imprimer('Demarrage', '')
 time.sleep(1)
 imprimer('MQTT BROKER ' + str(mqttPort), mqttBroker)
@@ -172,6 +174,8 @@ imprimer(datetime.datetime.now().strftime('%d %b %H:%M:%S'), get_ip())
 time.sleep(5)
 
 buttonsSetup()
+
+# Start
 if len(sys.argv) > 1 :
     cryptogram = alberti.cleanupCryptogram(sys.argv[1])
 
