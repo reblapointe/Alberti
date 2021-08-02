@@ -13,7 +13,7 @@ Pour un message et une clé donnée, il bâtit un cryptogramme selon le chiffre 
 Pour démarrer le programme : \
 `pi@raspberrypi:~$ python3 disqueAlberti.py`  
 
-Pour démarrer le programme avec un cryptogramme donné. Les caractères qui n’apparaissent pas sur le disque mobile sont ignorés\  
+Pour démarrer le programme avec un cryptogramme donné. Les caractères qui n’apparaissent pas sur le disque mobile sont ignorés \  
 `pi@raspberrypi:~$ python3 disqueAlberti.py QbinxmFbxudssigyyutscooNc`
 
 Pour chiffrer un message et obtenir un cryptogramme. Si la clé n’est pas donnée ou est invalide, la clé par défaut est `k`.   \
