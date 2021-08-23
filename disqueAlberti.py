@@ -15,10 +15,12 @@ address = deviceAddresses.POT_ADDRESS
 bus = smbus.SMBus(1) #initialize System Management Bus to enable I2C communication
 cmd = 0x40  # control byte to enable analog output
 
+letterVoltage = [238, 225, 217, 206, 198, 188, 179, 168, 158, 149, 140, 127, 119, 109, 99, 89, 79, 68, 60, 50, 39, 31, 19, 11]
 #cryptogram
-cryptogram = "QbinxmFbxudssigyyutscooNcudty"
+cryptogram = "QbinxmFbxvdssigyyvtscooNcvdty"
 pos = 0
 run = True
+refresh = False
 
 # LCD
 mylcd = I2C_LCD_driver.lcd()
@@ -60,7 +62,7 @@ def onMessage(client, userdata, message):
     global refresh
     global pos
     payload = str(message.payload.decode('utf-8'))
-    if message.topic == mqttMessageTopic : 
+    if message.topic == mqttMessageTopic :
         key = payload[0]
         message = alberti.encode(payload[1:])
         cryptogram = alberti.encrypt(key = key, message = message)
@@ -98,7 +100,6 @@ def imprimer(c, t) :
     mylcd.lcd_display_string(c[pos:], 1)
     mylcd.lcd_display_string(t[pos:], 2)
 
-refresh = False
 def leftButtonCallback(channel) :
     global pos
     global refresh
@@ -108,7 +109,7 @@ def leftButtonCallback(channel) :
 def rightButtonCallback(channel) :
     global pos
     global refresh
-    if (len(cryptogram) > 16) : 
+    if (len(cryptogram) > 16) :
         refresh = True
         pos = min(pos + 1, abs(len(cryptogram) - 16))
 
@@ -118,13 +119,25 @@ def loop():
     while True :
         value = analogRead(0)
         analogWrite(value)
-        newKey = int((256 - value) / 255 * alberti.Disk.size - 1)
+        i = 0
+        newKey = 0
+#        if nvalue != value:
+#            print(nvalue)
+        while i < len(letterVoltage) and letterVoltage[i] > value :
+            i = i + 1
+            newKey = i
+
+        if i == len(letterVoltage) :
+            newKey = 0
+
+        #newKey = int((244 - value) / 244 * alberti.Disk.size - 1)
         if (key != newKey or refresh) and run:
             os.system('clear')
             refresh = False
             key = newKey
+            print(value)
+            print(key)
             alberti.printDisk(key)
-
             print()
             print(cryptogram)
             print(alberti.decrypt(cryptogram, key))
@@ -132,7 +145,7 @@ def loop():
             print()
             imprimer(cryptogram, alberti.decrypt(cryptogram, key))
             print()
-        time.sleep(0.01)
+        time.sleep(0.001)
 
 def get_ip():
     cmd = "hostname -I | cut -d\' \' -f1"

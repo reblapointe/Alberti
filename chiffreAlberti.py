@@ -8,13 +8,13 @@ class Param :
 
 class Disk:
 	stationnary = "ABCDEFGILMNOPQRSTVXZ1234"
-	movable =     "gklnprtuz&xysomqihfdbace"
+	movable =     "gklnprtvz&xysomqihfdbace"
 	size = len(stationnary)
 	nbDigits = 4
-	nbKeys = len(stationnary) - nbDigits 
+	nbKeys = len(stationnary) - nbDigits
 	regexMessage = "ABCDEFGILMNOPQRSTVXZ"
 	regexCryptogram = "ABCDEFGILMNOPQRSTVXZgklnprtuz&xysomqihfdbace"
-	
+
 encoding = {
 	"H" : "FF",
 	"J" : "II",
@@ -31,9 +31,9 @@ def nextLettre() -> int:
 	return random.randint(0, Disk.nbKeys - 1)
 
 def insertDigit() -> bool:
-	return 0 == random.randint(0, Param.probaDigit) 
+	return 0 == random.randint(0, Param.probaDigit)
 
-def encryptChar(message:str, key:int) -> str: 
+def encryptChar(message:str, key:int) -> str:
 	posMess = Disk.stationnary.find(message)
 	posCypher = (posMess + key) % Disk.size
 	return Disk.movable[posCypher]
@@ -57,13 +57,13 @@ def encrypt(message:str, key:str) -> str:
 	while indexMessage < len(message):
 		indLettre = nextLettre()
 		cryptogram += Disk.stationnary[indLettre]
-		posKey = (posKeyRotary - indLettre) % Disk.size	
+		posKey = (posKeyRotary - indLettre) % Disk.size
 		while indexMessage < len(message) and not changeLetter() :
 			cryptogram += encryptChar(message[indexMessage], posKey)
 			indexMessage += 1;
 	return cryptogram
 
-def decryptChar(message:str, key:int) -> str: 
+def decryptChar(message:str, key:int) -> str:
 	posMess = Disk.movable.find(message)
 	if (posMess != -1) :
 		posCypher = (posMess - key) % Disk.size
@@ -77,7 +77,7 @@ def decrypt(cryptogram:str, position:int) -> str:
 		message += decryptChar(c, position)
 	return message
 
-def printDisk(posKey:int): 
+def printDisk(posKey:int):
 	for c in Disk.stationnary:
 		print(c, end = '')
 	s = 0
@@ -97,7 +97,7 @@ def bruteForce(cryptogram:str):
 def cleanupCryptogram(cryptogram:str) -> str:
         return re.sub("[^" + Disk.regexCryptogram + "]", "", cryptogram)
 
-                
+
 if __name__ == "__main__":
 	message = "Les carottes sont cuites"
 	key = "k"
